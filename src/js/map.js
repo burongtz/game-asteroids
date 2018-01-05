@@ -31,6 +31,10 @@ class Map {
             this.drawStar(starsPosition[i].x, starsPosition[i].y);
         }
     }
+
+    drawShip(image, x) {
+        this.ctx.drawImage(image, 265, 152, 122, 80, x, 126, 45, 25);
+    }
 }
 
 export default Map;
