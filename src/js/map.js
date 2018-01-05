@@ -1,4 +1,4 @@
-const Helper = require('./helper');
+import Helper from './helper';
 
 class Map {
     constructor() {
@@ -33,4 +33,4 @@ class Map {
     }
 }
 
-module.exports = Map;
+export default Map;
