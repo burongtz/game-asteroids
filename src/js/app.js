@@ -6,7 +6,7 @@ import Asteroid from './Asteroid';
 
 window.onload = function() {
     var sprite = new Sprite("img/game.png");
-    var map = new Map();
+    window.map = new Map();
     var asteroid = new Asteroid(1, 100, 0, 0);
     window.ship = new Ship(map, sprite);
     sprite.image.onload = function() {
