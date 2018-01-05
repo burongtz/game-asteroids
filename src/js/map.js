@@ -10,7 +10,7 @@ class Map {
 
     drawStar(x, y) {
         this.ctx.fillStyle = "#ffffff";
-        this.ctx.font = '3px FontAwesome';
+        this.ctx.font = '3px Arial';
         this.ctx.fillText('*', x, y);
     }
 
