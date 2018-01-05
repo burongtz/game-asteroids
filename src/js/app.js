@@ -9,7 +9,6 @@ window.onload = function() {
     var asteroid = new Asteroid(1, 100, 0, 0);
 
     sprite.image.onload = function() {
-        
         setInterval(function() {
             map.ctx.clearRect(0,0, map.width, map.height);
             map.drawStars();
