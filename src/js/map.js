@@ -36,6 +36,19 @@ class Map {
     drawShip(image, x) {
         this.ctx.drawImage(image, 265, 152, 122, 80, x, 126, 45, 25);
     }
+
+    drawBullets(image, arrayBullet) {
+        if (arrayBullet.length <= 0) {
+            return;
+        }
+        arrayBullet.forEach(function(bullet, index) {
+            if (bullet.y == 0) {
+                arrayBullet.splice(index, 1);
+                return;
+            }
+            this.ctx.drawImage(image, 392, 152, 27, 29, bullet.x + 19, bullet.y--, 10, 10);
+        }, this);
+    }
 }
 
 export default Map;

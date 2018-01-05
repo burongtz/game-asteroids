@@ -82,22 +82,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Sprite__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Ship__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Asteroid__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Bullet__ = __webpack_require__(14);
 
 
 
 
+
+
+//window.Bullet = require('./Bullet');
 
 window.onload = function () {
     var sprite = new __WEBPACK_IMPORTED_MODULE_2__Sprite__["a" /* default */]("img/game.png");
-    var map = new __WEBPACK_IMPORTED_MODULE_0__map__["a" /* default */]();
+    window.map = new __WEBPACK_IMPORTED_MODULE_0__map__["a" /* default */]();
+    var asteroid = new __WEBPACK_IMPORTED_MODULE_4__Asteroid__["a" /* default */](1, 100, 0, 0);
     window.ship = new __WEBPACK_IMPORTED_MODULE_3__Ship__["a" /* default */](map, sprite);
+    window.arrayBullet = [];
+    window.Bullet = __WEBPACK_IMPORTED_MODULE_5__Bullet__["a" /* default */];
     sprite.image.onload = function () {
-        map.drawStars(250);
-        ship.move();
         //map.ctx.drawImage(sprite.image, 0, 0);
-
         setInterval(function () {
-            // console.log("AAAAAA");
+            map.ctx.clearRect(0, 0, map.width, map.height);
+            map.drawStars();
+            map.drawBullets(sprite.image, arrayBullet);
+            map.ctx.drawImage(sprite.image, 0, 0, 55, 55, asteroid.x, ++asteroid.y, 20, 20);
+
+            ship.move();
         }, 80);
     };
 };
@@ -122,6 +132,8 @@ var Map = function () {
         this.ctx = this.canvas.getContext('2d');
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+        this.starsLimit = 250;
+        this.starsPosition = this.generateStarsPosition(this.starsLimit);
     }
 
     _createClass(Map, [{
@@ -145,16 +157,29 @@ var Map = function () {
         }
     }, {
         key: 'drawStars',
-        value: function drawStars(quantity) {
-            var starsPosition = this.generateStarsPosition(quantity);
-            for (var i = 0; i < quantity; i++) {
-                this.drawStar(starsPosition[i].x, starsPosition[i].y);
+        value: function drawStars() {
+            for (var i = 0; i < this.starsLimit; i++) {
+                this.drawStar(this.starsPosition[i].x, this.starsPosition[i].y);
             }
         }
     }, {
         key: 'drawShip',
         value: function drawShip(image, x) {
             this.ctx.drawImage(image, 265, 152, 122, 80, x, 126, 45, 25);
+        }
+    }, {
+        key: 'drawBullets',
+        value: function drawBullets(image, arrayBullet) {
+            if (arrayBullet.length <= 0) {
+                return;
+            }
+            arrayBullet.forEach(function (bullet, index) {
+                if (bullet.y == 0) {
+                    arrayBullet.splice(index, 1);
+                    return;
+                }
+                this.ctx.drawImage(image, 392, 152, 27, 29, bullet.x + 19, bullet.y--, 10, 10);
+            }, this);
         }
     }]);
 
@@ -199,20 +224,26 @@ window.onkeydown = function (event) {
         case 37:
             // Left
             ship.x -= 2;
+            map.ctx.clearRect(0, 0, map.width, map.height);
+            map.drawStars();
             ship.move();
-            break;
-        case 38:
-            // Up
-            console.log("UP");
             break;
         case 39:
             // Right
             ship.x += 2;
+            map.ctx.clearRect(0, 0, map.width, map.height);
+            map.drawStars();
             ship.move();
             break;
-        case 40:
-            // Bottom
-            console.log("BOTTOM");
+    }
+};
+
+window.onkeypress = function (event) {
+    switch (event.keyCode) {
+        case 32:
+            // Space
+            var bullet = new Bullet(0, 0, ship.x, 126);
+            arrayBullet.push(bullet);
             break;
     }
 };
@@ -363,6 +394,62 @@ var Actor = function () {
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (Actor);
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Actor__ = __webpack_require__(12);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Asteroid = function (_Actor) {
+  _inherits(Asteroid, _Actor);
+
+  function Asteroid() {
+    _classCallCheck(this, Asteroid);
+
+    return _possibleConstructorReturn(this, (Asteroid.__proto__ || Object.getPrototypeOf(Asteroid)).apply(this, arguments));
+  }
+
+  return Asteroid;
+}(__WEBPACK_IMPORTED_MODULE_0__Actor__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Asteroid);
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Actor__ = __webpack_require__(12);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Bullet = function (_Actor) {
+    _inherits(Bullet, _Actor);
+
+    function Bullet(speed, life, x, y) {
+        _classCallCheck(this, Bullet);
+
+        return _possibleConstructorReturn(this, (Bullet.__proto__ || Object.getPrototypeOf(Bullet)).call(this, speed, life, x, y));
+    }
+
+    return Bullet;
+}(__WEBPACK_IMPORTED_MODULE_0__Actor__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Bullet);
 
 /***/ })
 /******/ ]);
