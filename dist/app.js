@@ -154,6 +154,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Sprite__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Ship__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Asteroid__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__helper__ = __webpack_require__(4);
+
 
 
 
@@ -163,24 +165,26 @@ __webpack_require__(5);
 
 window.onload = function () {
     var sprite = new __WEBPACK_IMPORTED_MODULE_1__Sprite__["a" /* default */]("img/game.png");
-    var asteroid = new __WEBPACK_IMPORTED_MODULE_3__Asteroid__["a" /* default */](1, 100, 0, 0);
 
-    window.map = new __WEBPACK_IMPORTED_MODULE_0__map__["a" /* default */]();
+    window.asteroids = [];
+    window.map = new __WEBPACK_IMPORTED_MODULE_0__map__["a" /* default */](sprite.image);
     window.ship = new __WEBPACK_IMPORTED_MODULE_2__Ship__["a" /* default */](map, sprite);
-    sprite.image.onload = function () {
-        var asteroidFace = {
-            x: 0,
-            y: 0,
-            frames: 10
-        };
 
+    // Create asteroids
+    for (var i = 0, size = __WEBPACK_IMPORTED_MODULE_4__helper__["a" /* default */].getRandom(1, __WEBPACK_IMPORTED_MODULE_4__helper__["a" /* default */].ASTEROID_LIMIT); i < size; i++) {
+        window.asteroids.push(new __WEBPACK_IMPORTED_MODULE_3__Asteroid__["a" /* default */](__WEBPACK_IMPORTED_MODULE_4__helper__["a" /* default */].getRandom(1, 3), 100, __WEBPACK_IMPORTED_MODULE_4__helper__["a" /* default */].getRandom(0, map.width - 20), -15));
+    }
+
+    sprite.image.onload = function () {
         setInterval(function () {
-            map.ctx.clearRect(0, 0, map.width, map.height);
-            map.drawStars();
-            asteroidFace.x += asteroid.spriteW;
-            map.ctx.drawImage(sprite.image, asteroidFace.x, asteroidFace.y, asteroid.spriteW, asteroid.spriteH, asteroid.x, asteroid.y, 20, 20);
+            // Change asteroids position
+            window.asteroids.forEach(function (asteroid) {
+                asteroid.y += asteroid.speed;
+            });
+
+            map.drawAll(window.asteroids);
             ship.move();
-        }, 80);
+        }, 40);
     };
 };
 
@@ -197,7 +201,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 var Map = function () {
-    function Map() {
+    function Map(image) {
         _classCallCheck(this, Map);
 
         this.canvas = document.querySelector('#asteroids');
@@ -206,6 +210,7 @@ var Map = function () {
         this.height = this.canvas.height;
         this.starsLimit = 250;
         this.starsPosition = this.generateStarsPosition(this.starsLimit);
+        this.image = image;
     }
 
     _createClass(Map, [{
@@ -239,6 +244,22 @@ var Map = function () {
         value: function drawShip(image, x) {
             this.ctx.drawImage(image, 265, 152, 122, 80, x, 126, 45, 25);
         }
+    }, {
+        key: 'drawAsteroid',
+        value: function drawAsteroid(x, y) {
+            this.ctx.drawImage(this.image, 0, 0, 55, 55, x, y, 20, 20);
+        }
+    }, {
+        key: 'drawAll',
+        value: function drawAll(asteroids) {
+            var that = this;
+
+            this.ctx.clearRect(0, 0, map.width, map.height);
+            this.drawStars();
+            asteroids.forEach(function (asteroid) {
+                that.drawAsteroid(asteroid.x, asteroid.y);
+            });
+        }
     }]);
 
     return Map;
@@ -265,6 +286,11 @@ var Helper = function () {
         value: function getRandom(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
+    }, {
+        key: "ASTEROID_LIMIT",
+        get: function get() {
+            return 10;
+        }
     }]);
 
     return Helper;
@@ -282,8 +308,7 @@ window.onkeydown = function (event) {
         case 37:
             // Left
             ship.x -= 2;
-            map.ctx.clearRect(0, 0, map.width, map.height);
-            map.drawStars();
+            map.drawAll(window.asteroids);
             ship.move();
             break;
         case 38:
@@ -293,8 +318,7 @@ window.onkeydown = function (event) {
         case 39:
             // Right
             ship.x += 2;
-            map.ctx.clearRect(0, 0, map.width, map.height);
-            map.drawStars();
+            map.drawAll(window.asteroids);
             ship.move();
             break;
         case 40:
@@ -393,11 +417,7 @@ var Asteroid = function (_Actor) {
 
         _classCallCheck(this, Asteroid);
 
-        var _this = _possibleConstructorReturn(this, (Asteroid.__proto__ || Object.getPrototypeOf(Asteroid)).call(this, speed, life, x, y));
-
-        _this.spriteW = 60;
-        _this.spriteH = 60;
-        return _this;
+        return _possibleConstructorReturn(this, (Asteroid.__proto__ || Object.getPrototypeOf(Asteroid)).call(this, speed, life, x, y));
     }
 
     return Asteroid;
