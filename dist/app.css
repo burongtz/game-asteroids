@@ -1,0 +1,63 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.app {
+  background-color: #000;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  min-height: 100vh;
+  height: 100vh;
+}
+
+.game {
+  width: 650px;
+  -webkit-box-shadow: 0 0 0 1px #f0f0f0;
+          box-shadow: 0 0 0 1px #f0f0f0;
+  border-radius: 2px;
+}
+
+.game__map {
+  height: 400px;
+}
+
+.game__dashboard {
+  height: 50px;
+  background-color: gainsboro;
+}
+
+.game__toolbar {
+  height: 50px;
+  background-color: gainsboro;
+}
+
+.dashboard {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100%;
+}
+
+.dashboard__item {
+  width: 33.33%;
+  height: 25px;
+  text-align: center;
+}
+
