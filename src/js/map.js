@@ -34,15 +34,15 @@ class Map {
         }
     }
 
-    drawShip(image, x) {
-        this.ctx.drawImage(image, 265, 152, 122, 80, x, 126, 45, 25);
+    drawShip(x) {
+        this.ctx.drawImage(this.image, 265, 152, 122, 80, x, 126, 45, 25);
     }
 
     drawAsteroid(x, y) {
         this.ctx.drawImage(this.image, 0, 0, 55, 55, x, y, 20, 20);
     }
 
-    drawAll(asteroids) {
+    drawAll(asteroids, ship) {
         var that = this;
 
         this.ctx.clearRect(0, 0, map.width, map.height);
@@ -50,6 +50,7 @@ class Map {
         asteroids.forEach(function(asteroid) {
             that.drawAsteroid(asteroid.x, asteroid.y);
         });
+        this.drawShip(ship.x);
     }
 }
 

@@ -1,13 +1,9 @@
 import Actor from './Actor';
 
 class Ship extends Actor {
-    constructor(map, sprite) {
-        super();
-        this.map = map;
-        this.sprite = sprite
+    constructor(speed = 0,  life = 0, x = 0, y = 0) {
+        super(speed, life, x, y);
     }
-
-
 
     move() {
         if (this.x < 0) {
@@ -17,7 +13,6 @@ class Ship extends Actor {
         if (this.x > 254) {
             this.x = 254;
         }
-        this.map.drawShip(this.sprite.image, this.x);
     }
 }
 
