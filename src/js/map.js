@@ -6,6 +6,8 @@ class Map {
         this.ctx = this.canvas.getContext('2d');
         this.width = this.canvas.width;
         this.height =this. canvas.height;
+        this.starsLimit = 250;
+        this.starsPosition = this.generateStarsPosition(this.starsLimit);
     }
 
     drawStar(x, y) {
@@ -25,10 +27,9 @@ class Map {
         return starsPosition;
     }
 
-    drawStars(quantity) {
-        var starsPosition = this.generateStarsPosition(quantity);
-        for (var i = 0; i < quantity; i++) {
-            this.drawStar(starsPosition[i].x, starsPosition[i].y);
+    drawStars() {
+        for (var i = 0; i < this.starsLimit; i++) {
+            this.drawStar(this.starsPosition[i].x, this.starsPosition[i].y);
         }
     }
 }
