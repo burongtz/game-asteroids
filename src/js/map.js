@@ -18,8 +18,8 @@ class Map {
         var starsPosition = [] ;
         for (var i = 0; i < starsLimit; i++) {
             starsPosition.push({
-                x: Helper.getRandom(0, 600),
-                y: Helper.getRandom(0, 500)
+                x: Helper.getRandom(0, this.width),
+                y: Helper.getRandom(0, this.height)
             });
         }
         return starsPosition;
