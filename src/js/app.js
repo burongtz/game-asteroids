@@ -11,7 +11,7 @@ window.onload = function() {
     
     window.asteroids = [];
     window.map = new Map(sprite.image);
-    window.ship = new Ship(map, sprite);
+    window.ship = new Ship(5, 100, 0, 0);
     
     // Create asteroids
     for (var i = 0, size = Helper.getRandom(1, Helper.ASTEROID_LIMIT); i < size; i++) {
@@ -27,8 +27,7 @@ window.onload = function() {
                 asteroid.y += asteroid.speed;
             });
 
-            map.drawAll(window.asteroids);
-            ship.move();
+            map.drawAll(window.asteroids, window.ship);
         }, 40);
     };
 };
