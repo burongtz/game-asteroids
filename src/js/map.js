@@ -1,13 +1,14 @@
 import Helper from './helper';
 
 class Map {
-    constructor() {
+    constructor(image) {
         this.canvas = document.querySelector('#asteroids');
         this.ctx = this.canvas.getContext('2d');
         this.width = this.canvas.width;
         this.height =this. canvas.height;
         this.starsLimit = 250;
         this.starsPosition = this.generateStarsPosition(this.starsLimit);
+        this.image = image;
     }
 
     drawStar(x, y) {
@@ -33,8 +34,23 @@ class Map {
         }
     }
 
-    drawShip(image, x) {
-        this.ctx.drawImage(image, 265, 152, 122, 80, x, 126, 45, 25);
+    drawShip(x) {
+        this.ctx.drawImage(this.image, 265, 152, 122, 80, x, 126, 45, 25);
+    }
+
+    drawAsteroid(x, y) {
+        this.ctx.drawImage(this.image, 0, 0, 55, 55, x, y, 20, 20);
+    }
+
+    drawAll(asteroids, ship) {
+        var that = this;
+
+        this.ctx.clearRect(0, 0, map.width, map.height);
+        this.drawStars();
+        asteroids.forEach(function(asteroid) {
+            that.drawAsteroid(asteroid.x, asteroid.y);
+        });
+        this.drawShip(ship.x);
     }
 
     drawBullets(image, arrayBullet) {
