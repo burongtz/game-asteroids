@@ -18,10 +18,12 @@ window.onload = function() {
     window.Bullet = Bullet;
 
     // Create asteroids
-    for (var i = 0, size = Helper.getRandom(1, Helper.ASTEROID_LIMIT); i < size; i++) {
-        window.asteroids.push(
-            new Asteroid(Helper.getRandom(1, 3), 100, Helper.getRandom(0 , map.width - 20), -15)
-        );
+    for (var i = 0; i < Helper.ASTEROID_LIMIT; i++) {
+        setTimeout(function() {
+            window.asteroids.push(
+                new Asteroid(Helper.getRandom(1, 3), 100, Helper.getRandom(0 , map.width - 20), -15)
+            );
+        }, Helper.getRandom(Helper.ASTEROID_MIN_TIME, Helper.ASTEROID_MAX_TIME));
     }
 
     sprite.image.onload = function() {

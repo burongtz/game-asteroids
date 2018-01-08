@@ -158,7 +158,17 @@ var Helper = function () {
     }, {
         key: "ASTEROID_LIMIT",
         get: function get() {
-            return 10;
+            return 500;
+        }
+    }, {
+        key: "ASTEROID_MIN_TIME",
+        get: function get() {
+            return 500;
+        }
+    }, {
+        key: "ASTEROID_MAX_TIME",
+        get: function get() {
+            return 60000;
         }
     }]);
 
@@ -207,8 +217,10 @@ window.onload = function () {
     window.Bullet = __WEBPACK_IMPORTED_MODULE_4__Bullet__["a" /* default */];
 
     // Create asteroids
-    for (var i = 0, size = __WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].getRandom(1, __WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].ASTEROID_LIMIT); i < size; i++) {
-        window.asteroids.push(new __WEBPACK_IMPORTED_MODULE_3__Asteroid__["a" /* default */](__WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].getRandom(1, 3), 100, __WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].getRandom(0, map.width - 20), -15));
+    for (var i = 0; i < __WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].ASTEROID_LIMIT; i++) {
+        setTimeout(function () {
+            window.asteroids.push(new __WEBPACK_IMPORTED_MODULE_3__Asteroid__["a" /* default */](__WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].getRandom(1, 3), 100, __WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].getRandom(0, map.width - 20), -15));
+        }, __WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].getRandom(__WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].ASTEROID_MIN_TIME, __WEBPACK_IMPORTED_MODULE_5__helper__["a" /* default */].ASTEROID_MAX_TIME));
     }
 
     sprite.image.onload = function () {
