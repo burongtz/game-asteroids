@@ -218,8 +218,7 @@ window.onload = function () {
                 asteroid.y += asteroid.speed;
             });
 
-            map.drawAll(window.asteroids, window.ship);
-            map.drawBullets(sprite.image, arrayBullet);
+            map.drawAll(window.asteroids, window.ship, arrayBullet);
         }, 40);
     };
 };
@@ -287,7 +286,7 @@ var Map = function () {
         }
     }, {
         key: 'drawAll',
-        value: function drawAll(asteroids, ship) {
+        value: function drawAll(asteroids, ship, bullets) {
             var that = this;
 
             this.ctx.clearRect(0, 0, map.width, map.height);
@@ -296,10 +295,11 @@ var Map = function () {
                 that.drawAsteroid(asteroid.x, asteroid.y);
             });
             this.drawShip(ship.x);
+            this.drawBullets(bullets);
         }
     }, {
         key: 'drawBullets',
-        value: function drawBullets(image, arrayBullet) {
+        value: function drawBullets(arrayBullet) {
             if (arrayBullet.length <= 0) {
                 return;
             }
@@ -308,7 +308,7 @@ var Map = function () {
                     arrayBullet.splice(index, 1);
                     return;
                 }
-                this.ctx.drawImage(image, 392, 152, 27, 29, bullet.x + 19, bullet.y--, 10, 10);
+                this.ctx.drawImage(this.image, 392, 152, 27, 29, bullet.x + 19, bullet.y--, 10, 10);
             }, this);
         }
     }]);
@@ -450,33 +450,38 @@ var Bullet = function (_Actor) {
 // Key events
 var isLeftDown = false;
 var isRightDown = false;
+var isSpaceDown = false;
 window.onkeydown = function (event) {
     switch (event.keyCode) {
         case 37:
             // Left
             isLeftDown = true;
-            moveLeft();
-            break;
-        case 38:
-            // Up
-            console.log("UP");
+            if (isSpaceDown) {
+                shootBullet();
+            } else {
+                moveLeft();
+            }
             break;
         case 39:
             // Right
             isRightDown = true;
-            moveRight();
+            if (isSpaceDown) {
+                shootBullet();
+            } else {
+                moveRight();
+            }
             break;
     }
 };
 window.onkeyup = function (event) {
     switch (event.keyCode) {
+        case 32:
+            // Space
+            isSpaceDown = false;
+            break;
         case 37:
             // Left
             isLeftDown = false;
-            break;
-        case 38:
-            // Up
-            console.log("UP");
             break;
         case 39:
             // Right
@@ -489,29 +494,32 @@ window.onkeypress = function (event) {
     switch (event.keyCode) {
         case 32:
             // Space
-            if (isLeftDown) {
-                moveLeft();
-            }
-
-            if (isRightDown) {
-                moveRight();
-            }
-            console.log(isRightDown + " " + isLeftDown);
-            arrayBullet.push(new Bullet(0, 0, ship.x, 119));
+            isSpaceDown = true;
+            shootBullet();
             break;
     }
 };
 
+function shootBullet() {
+    if (isLeftDown) {
+        moveLeft();
+    }
+    if (isRightDown) {
+        moveRight();
+    }
+    arrayBullet.push(new Bullet(0, 0, ship.x, 119));
+}
+
 function moveLeft() {
     ship.x -= ship.speed;
     ship.move();
-    map.drawAll(window.asteroids, window.ship);
+    map.drawAll(window.asteroids, window.ship, arrayBullet);
 }
 
 function moveRight() {
     ship.x += ship.speed;
     ship.move();
-    map.drawAll(window.asteroids, window.ship);
+    map.drawAll(window.asteroids, window.ship, arrayBullet);
 }
 
 /***/ }),

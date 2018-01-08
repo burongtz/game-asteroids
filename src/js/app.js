@@ -31,8 +31,7 @@ window.onload = function() {
                 asteroid.y += asteroid.speed;
             });
 
-            map.drawAll(window.asteroids, window.ship);
-            map.drawBullets(sprite.image, arrayBullet);
+            map.drawAll(window.asteroids, window.ship, arrayBullet);
         }, 40);
     };
 };

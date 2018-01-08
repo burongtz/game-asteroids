@@ -42,7 +42,7 @@ class Map {
         this.ctx.drawImage(this.image, 0, 0, 55, 55, x, y, 20, 20);
     }
 
-    drawAll(asteroids, ship) {
+    drawAll(asteroids, ship, bullets) {
         var that = this;
 
         this.ctx.clearRect(0, 0, map.width, map.height);
@@ -51,9 +51,10 @@ class Map {
             that.drawAsteroid(asteroid.x, asteroid.y);
         });
         this.drawShip(ship.x);
+        this.drawBullets(bullets);
     }
 
-    drawBullets(image, arrayBullet) {
+    drawBullets(arrayBullet) {
         if (arrayBullet.length <= 0) {
             return;
         }
@@ -62,7 +63,7 @@ class Map {
                 arrayBullet.splice(index, 1);
                 return;
             }
-            this.ctx.drawImage(image, 392, 152, 27, 29, bullet.x + 19, bullet.y--, 10, 10);
+            this.ctx.drawImage(this.image, 392, 152, 27, 29, bullet.x + 19, bullet.y--, 10, 10);
         }, this);
     }
 }
